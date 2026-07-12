@@ -1,0 +1,10 @@
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.pyc
+.env
+outputs/*.pdf
+outputs/*.docx
+outputs/*.json
+

@@ -1,0 +1,14 @@
+岗位：AI Agent 实习生
+
+岗位职责：
+1. 参与 AI Agent、RAG 知识库、LLM 应用 Demo 的开发与测试。
+2. 使用 Python、Streamlit 或 FastAPI 搭建可运行的交互原型。
+3. 根据业务需求设计 Prompt，处理结构化 JSON 输出。
+4. 编写基础单元测试，使用 Git 管理项目代码。
+
+任职要求：
+1. 熟悉 Python，了解 FastAPI 或 Streamlit。
+2. 了解 LLM API、Prompt Engineering、RAG 或 AI Agent 基本流程。
+3. 能处理 TXT、DOCX、PDF 等文档解析任务。
+4. 有 pytest、Git、JSON 使用经验优先。
+5. 可在厦门实习 3 个月以上，可尽快到岗。

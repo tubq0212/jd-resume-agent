@@ -1,0 +1,17 @@
+候选人：人工智能本科，目标 AI Agent 实习。
+
+技能：
+- 熟悉 Python、Streamlit、JSON、Git。
+- 做过校园知识库 RAG 问答 Agent，支持文档解析、关键词检索和引用展示。
+- 了解 LLM API、Prompt 设计和结构化输出。
+- 使用 pytest 为核心函数编写基础测试。
+
+项目经历：
+校园知识库 RAG 问答 Agent
+- 使用 Python 和 Streamlit 搭建可运行问答页面。
+- 实现 TXT / DOCX / PDF 文档解析与文本切分。
+- 基于关键词 Top-K 检索构造 Prompt，生成带参考片段的回答。
+
+JD-Resume 匹配与简历优化 Agent
+- 使用 Python 和 Streamlit 构建岗位 JD 与简历匹配页面。
+- 支持上传 TXT / DOCX / PDF 简历，输出匹配分数、缺失技能和 JSON 分析报告。
