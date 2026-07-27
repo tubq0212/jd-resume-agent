@@ -15,7 +15,7 @@ st.set_page_config(
 
 
 st.title("JD-Resume 匹配与简历优化 Agent")
-st.caption("第二个可写入简历的 AI Agent 项目：从规则版匹配逐步升级到真实 Agent。")
+st.caption("解析岗位 JD 和简历内容，输出匹配评分、能力缺口和改写建议。")
 
 with st.sidebar:
     st.subheader("分析模式")

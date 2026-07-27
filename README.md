@@ -2,7 +2,7 @@
 
 面向 AI Agent 实习求职场景，解析岗位 JD 与简历内容，输出匹配评分、命中技能、能力缺口、简历优势、改写方向和下一步补强计划。
 
-当前项目是真实可运行版本：规则版默认可用，LLM 增强版可选启用。
+项目默认使用规则版分析流程，也可以在配置 API Key 后启用 LLM 增强建议。
 
 ## 已实现功能
 
@@ -57,10 +57,10 @@ jd-resume-agent/
       parser.py
       matcher.py
       llm_advisor.py
+      api.py
   tests/
     test_matcher.py
-  outputs/
-  work/
+    test_api.py
 ```
 
 ## 快速开始
@@ -102,7 +102,7 @@ http://localhost:8501
 
 ## 多步骤 Agent 流程
 
-项目通过 `agent_pipeline.py` 显式组织分析流程：
+项目通过 `agent_pipeline.py` 组织分析流程：
 
 1. `input_validation`：检查 JD 与简历文本是否为空。
 2. `jd_resume_matching`：抽取 JD 与简历技能关键词，计算匹配度。
@@ -114,7 +114,7 @@ http://localhost:8501
 
 ## 示例数据
 
-项目提供了两份示例输入，方便演示和测试：
+项目提供了两份示例输入，方便本地测试：
 
 ```text
 examples/sample_jd.txt
@@ -204,7 +204,7 @@ POST http://127.0.0.1:8000/analyze
 ```json
 {
   "jd_text": "要求熟悉 Python、Streamlit、FastAPI、pytest。",
-  "resume_text": "项目使用 Python 和 Streamlit 搭建简历匹配 Demo。",
+  "resume_text": "项目使用 Python 和 Streamlit 搭建简历匹配工具。",
   "enable_llm": false
 }
 ```
