@@ -4,6 +4,12 @@ __pycache__/
 venv/
 *.pyc
 .env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+*.pem
+*.key
+*cookie*
 outputs/*.pdf
 outputs/*.docx
 outputs/*.json

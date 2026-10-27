@@ -16,6 +16,7 @@ st.set_page_config(
 
 st.title("JD-Resume 匹配与简历优化 Agent")
 st.caption("解析岗位 JD 和简历内容，输出匹配评分、能力缺口和改写建议。")
+st.caption("公开演示请使用脱敏材料。规则分数反映关键词覆盖，不代表录用概率；开启模型增强会将输入发送给配置的模型服务。")
 
 with st.sidebar:
     st.subheader("分析模式")
