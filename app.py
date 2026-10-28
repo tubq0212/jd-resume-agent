@@ -27,7 +27,7 @@ with st.sidebar:
         else:
             st.warning("未检测到 LLM_API_KEY，将自动使用规则版。")
 
-    with st.expander("多步骤 Agent 流程"):
+    with st.expander("分析步骤"):
         for index, step in enumerate(get_agent_steps(), start=1):
             st.markdown(f"{index}. **{step['name']}**：{step['description']}")
 

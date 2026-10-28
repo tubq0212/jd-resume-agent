@@ -1,146 +1,30 @@
 # JD-Resume 匹配与简历优化 Agent
 
-面向 AI Agent 实习求职场景，解析岗位 JD 与简历内容，输出匹配评分、命中技能、能力缺口、简历优势、改写方向和下一步补强计划。
+把岗位 JD 与简历放在一起，检查技能关键词覆盖情况，并给出修改建议。可以粘贴文本，也可以上传 TXT、DOCX 或文字型 PDF，分析结果支持下载为 JSON。
 
-项目默认使用规则版分析流程，也可以在配置 API Key 后启用 LLM 增强建议。
+[在线使用](https://jd-resume-agent-rnhcdfpzivrbdjubjrtbcj.streamlit.app/) · [云端配置](CLOUD_DEPLOYMENT.md)
 
-## 已实现功能
+## 分析过程
 
-- Streamlit 交互页面
-- 岗位 JD 文本输入
-- 简历文本粘贴输入
-- TXT / DOCX / PDF 文件上传
-- TXT 编码兼容读取：UTF-8 / UTF-8-SIG / GBK
-- DOCX 文本解析：`python-docx`
-- 文字型 PDF 文本解析：`pypdf`
-- 扫描版 / 图片型 PDF 空文本提示
-- JD 与简历技能关键词抽取
-- 匹配度评分
-- 已命中技能与缺失技能分析
-- 简历优势分析
-- 能力缺口优先级
-- 简历改写方向建议
-- 下一步补强计划
-- 结构化 JSON 输出
-- JSON 分析报告下载
-- 可选 LLM 增强分析
-- 无 API Key 时自动回退规则版
-- 多步骤 Agent 流程追踪
-- pytest 单元测试
+默认按关键词表抽取技能，以“简历命中的 JD 技能数 / JD 中识别到的技能数”计算分数，再整理缺失项和修改建议。例如，JD 包含 Python、FastAPI、pytest，简历只写了 Python，覆盖分数约为 33。
 
-## 技术栈
+页面中的“启用 LLM 增强”会调用配置的模型服务，补充优势、缺口和改写建议；匹配分数仍由规则计算。未配置密钥或模型调用失败时，保留规则结果。
 
-- Python
-- Streamlit
-- python-docx
-- pypdf
-- requests
-- python-dotenv
-- 结构化 JSON
-- LLM API 可选增强
-- pytest
-- Git
+`agent_pipeline.py` 是固定的分析流水线，组织输入校验、匹配、建议和输出步骤，不是多个独立 Agent 之间的自主协作。
 
-## 项目结构
+## 本地运行
 
-```text
-jd-resume-agent/
-  app.py
-  requirements.txt
-  README.md
-  .env.example
-  .gitignore
-  src/
-    jd_resume_agent/
-      __init__.py
-      agent_pipeline.py
-      parser.py
-      matcher.py
-      llm_advisor.py
-      api.py
-  tests/
-    test_matcher.py
-    test_api.py
+```powershell
+git clone https://github.com/tubq0212/jd-resume-agent.git
+cd jd-resume-agent
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe -m streamlit run app.py
 ```
 
-## 快速开始
+打开 `http://localhost:8501`。可以用 `examples/sample_jd.txt` 和 `examples/sample_resume.txt` 试用；两份文件均为虚构样例。
 
-进入项目目录：
-
-```bash
-cd /d D:\AI-Agent-Projects\jd-resume-agent
-```
-
-安装依赖：
-
-```bash
-pip install -r requirements.txt
-```
-
-启动页面：
-
-```bash
-streamlit run app.py
-```
-
-打开浏览器：
-
-```text
-http://localhost:8501
-```
-
-## 使用方式
-
-1. 在左侧输入岗位 JD。
-2. 在右侧粘贴简历文本，或上传 TXT / DOCX / PDF 简历。
-3. 点击“开始分析”。
-4. 查看三个结果页：
-   - 匹配概览
-   - 简历教练建议
-   - JSON 结果
-5. 点击“下载 JSON 分析报告”保存结构化结果。
-
-## 多步骤 Agent 流程
-
-项目通过 `agent_pipeline.py` 组织分析流程：
-
-1. `input_validation`：检查 JD 与简历文本是否为空。
-2. `jd_resume_matching`：抽取 JD 与简历技能关键词，计算匹配度。
-3. `gap_analysis`：生成命中技能、缺失技能、优势与补强建议。
-4. `llm_enhancement`：在配置 API Key 时调用 LLM 优化建议，否则回退规则版。
-5. `structured_output`：输出稳定 JSON，供页面、API 和下载报告复用。
-
-页面侧边栏会展示这套流程，API 返回结果中也包含 `agent_steps` 字段。
-
-## 示例数据
-
-项目提供了两份示例输入，方便本地测试：
-
-```text
-examples/sample_jd.txt
-examples/sample_resume.txt
-```
-
-使用方式：
-
-1. 打开 `examples/sample_jd.txt`，复制内容到页面左侧“岗位 JD”。
-2. 打开 `examples/sample_resume.txt`，复制内容到页面右侧“简历文本”。
-3. 点击“开始分析”。
-
-也可以用这两份文本测试 FastAPI `/analyze` 接口。
-
-## LLM 增强配置
-
-默认情况下，项目使用规则版分析，不需要 API Key。
-
-如果要启用 LLM 增强：
-
-1. 复制 `.env.example` 为 `.env`
-2. 填写你的 API Key
-3. 重启 Streamlit
-4. 在左侧侧边栏打开“启用 LLM 增强”
-
-`.env` 示例：
+启用模型前，将 `.env.example` 复制为 `.env`，填写密钥、完整聊天接口地址和模型名称：
 
 ```env
 LLM_API_KEY=your_api_key_here
@@ -148,72 +32,38 @@ LLM_BASE_URL=https://api.deepseek.com/chat/completions
 LLM_MODEL=deepseek-chat
 ```
 
-注意：`.env` 已加入 `.gitignore`，不要把真实 Key 上传到 GitHub。
+`LLM_BASE_URL` 需要包含 `/chat/completions` 路径。修改后重启页面，再打开“启用 LLM 增强”。云端应用在 Streamlit 的 Secrets 中填写同名配置。
+
+## 代码入口
+
+| 文件 | 用途 |
+| --- | --- |
+| `app.py` | Streamlit 页面与报告下载 |
+| `src/jd_resume_agent/parser.py` | TXT、DOCX、PDF 文本提取 |
+| `src/jd_resume_agent/matcher.py` | 关键词表、评分和规则建议 |
+| `src/jd_resume_agent/llm_advisor.py` | 模型请求、JSON 校验与失败回退 |
+| `src/jd_resume_agent/agent_pipeline.py` | 组织分析步骤 |
+| `src/jd_resume_agent/api.py` | 复用同一流程的 FastAPI 接口 |
+
+需要单独启动 API 时运行：
+
+```powershell
+.venv\Scripts\python.exe -m uvicorn src.jd_resume_agent.api:app --reload
+```
+
+`POST /analyze` 接收 `jd_text`、`resume_text` 和可选的 `enable_llm`；`GET /health` 返回服务状态。Streamlit 云端演示只部署页面，未单独部署这组 API。
+
+## 使用限制
+
+- 分数表示词表范围内的技能覆盖，不能判断实际能力、项目真实性或录用概率。当前词表主要面向 Python 和 LLM 应用岗位。
+- 扫描件 PDF 暂不支持 OCR；提取不到文字时需要改用文本或 DOCX。
+- 规则建议会重复，不会替用户核实经历；模型建议也需要人工检查。
+- 开启模型增强会将输入文本发送给所配置的服务商。公开演示请使用脱敏内容。
 
 ## 测试
 
-运行全部测试：
-
-```bash
-python -m pytest
+```powershell
+.venv\Scripts\python.exe -m pytest -q
 ```
 
-当前测试覆盖：
-
-- 技能关键词抽取
-- 匹配评分
-- 结构化教练字段
-- JSON 可序列化
-- TXT 解析
-- DOCX 解析
-- PDF 依赖缺失提示
-- PDF 空文本提示
-- LLM Prompt 构造
-- LLM JSON 字段校验
-- 无 API Key 自动回退
-
-## 当前能力边界
-
-- PDF 只支持文字型 PDF。
-- 扫描版或图片型 PDF 暂不做 OCR，会提示用户改用 DOCX / TXT。
-- LLM 增强是可选功能，没有 API Key 时仍能完整运行规则版。
-- 当前不会自动投递简历，不爬取招聘网站，不保证 offer。
-
-## FastAPI 接口
-
-启动 API 服务：
-
-```bash
-uvicorn src.jd_resume_agent.api:app --reload
-```
-
-健康检查：
-
-```text
-GET http://127.0.0.1:8000/health
-```
-
-分析接口：
-
-```text
-POST http://127.0.0.1:8000/analyze
-```
-
-请求示例：
-
-```json
-{
-  "jd_text": "要求熟悉 Python、Streamlit、FastAPI、pytest。",
-  "resume_text": "项目使用 Python 和 Streamlit 搭建简历匹配工具。",
-  "enable_llm": false
-}
-```
-
-返回结果与 Streamlit 页面使用同一套结构化 JSON。
-
-## 后续路线
-
-- 接入真实 LLM API 并测试返回质量
-- 增加 Markdown 报告导出
-- 增加示例 JD 和示例简历
-- 增加 GitHub Actions 自动运行测试
+测试覆盖文本解析、关键词匹配、评分、模型结果校验、规则回退和接口响应，不需要真实模型密钥。

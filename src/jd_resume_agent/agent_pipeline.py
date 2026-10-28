@@ -17,7 +17,7 @@ AGENT_STEPS = [
     AgentStep("jd_resume_matching", "抽取 JD 与简历技能关键词，计算匹配度。"),
     AgentStep("gap_analysis", "生成命中技能、缺失技能、优势与补强建议。"),
     AgentStep("llm_enhancement", "在配置 API Key 时调用 LLM 优化建议，否则回退规则版。"),
-    AgentStep("structured_output", "输出稳定 JSON，供页面、API 和下载报告复用。"),
+    AgentStep("structured_output", "整理 JSON 结果，供页面展示和报告下载使用。"),
 ]
 
 

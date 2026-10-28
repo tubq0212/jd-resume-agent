@@ -79,11 +79,11 @@ def build_resume_strengths(matched_skills: list[str], resume_skills: list[str]) 
 
     agent_related = [skill for skill in resume_skills if skill in {"ai agent", "agent", "rag", "llm", "大模型"}]
     if agent_related:
-        strengths.append("简历中已经出现 AI Agent / LLM 应用相关关键词，适合继续强化项目结果表达。")
+        strengths.append("简历提到了 Agent 或大模型相关内容，可以补充具体功能、本人负责的部分和运行结果。")
 
     engineering_related = [skill for skill in resume_skills if skill in {"python", "streamlit", "fastapi", "pytest", "git", "json"}]
     if len(engineering_related) >= 2:
-        strengths.append("简历体现了一定工程实现能力，可以进一步补充可运行页面、接口、测试或报告下载等证据。")
+        strengths.append("简历提到了多项开发工具，建议结合项目说明它们分别用在了哪里。")
 
     if not strengths:
         strengths.append("当前简历与 JD 的显性技能重合较少，建议先补充项目经历中的技术关键词。")
@@ -96,7 +96,7 @@ def build_gap_analysis(missing_skills: list[str]) -> list[dict]:
 
     for skill in missing_skills:
         priority = "high" if skill in HIGH_PRIORITY_SKILLS else "medium"
-        action = f"如果你确实掌握 {skill}，请把它写进项目技术栈或职责描述；如果还不熟，先做一个最小 Demo。"
+        action = f"核对是否有使用 {skill} 的经历；有的话补充具体用法，没有则保留为待学习项。"
         gap_analysis.append(
             {
                 "skill": skill,
@@ -123,8 +123,8 @@ def build_rewrite_suggestions(missing_skills: list[str], matched_skills: list[st
             + "。不要只堆关键词，要绑定到项目功能。"
         )
 
-    suggestions.append("项目描述建议按四段组织：项目目标、技术架构、你的职责、可验证成果。")
-    suggestions.append("面向 AI Agent 实习时，尽量突出文档解析、结构化输出、工具调用、测试和可复现运行步骤。")
+    suggestions.append("项目经历写清楚解决了什么问题、本人做了什么，以及能展示的结果，不必固定套用同一种格式。")
+    suggestions.append("按岗位要求挑选相关经历。文档解析、工具调用或测试等内容，只写实际完成的部分。")
 
     return suggestions
 
@@ -140,7 +140,7 @@ def build_next_steps(missing_skills: list[str], match_score: int) -> list[str]:
     for skill in missing_skills[:3]:
         next_steps.append(f"围绕 {skill} 增加一个可验证的小功能或项目证据。")
 
-    next_steps.append("保存 JSON 分析报告，作为后续接入 LLM API 和 FastAPI 接口的标准输出格式。")
+    next_steps.append("保存本次报告，修改简历后对照检查缺失项是否已有具体经历支撑。")
 
     return next_steps
 
